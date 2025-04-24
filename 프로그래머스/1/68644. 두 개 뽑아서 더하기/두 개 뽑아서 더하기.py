@@ -1,7 +1,10 @@
 def solution(numbers):
-    temp = []
+    answer = []
+    sumV = 0
     for i in range(len(numbers)):
         for j in range(i+1, len(numbers)):
-            temp.append(numbers[i] + numbers[j])
-    answer = sorted(set(temp))
+            sumV = numbers[i] + numbers[j]
+            if sumV not in answer:
+                answer.append(sumV)
+    answer.sort()
     return answer
