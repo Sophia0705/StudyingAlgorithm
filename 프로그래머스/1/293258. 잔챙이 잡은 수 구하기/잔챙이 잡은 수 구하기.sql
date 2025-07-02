@@ -1,2 +1,2 @@
 select count(id) as fish_count from fish_info
-where length <= 10 or length is null;
+where length is null;
