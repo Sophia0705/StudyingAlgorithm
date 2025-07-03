@@ -1,5 +1,6 @@
 -- 코드를 작성해주세요
-select id, email, first_name, last_name
-from developers
-where (skill_code & 256 != 0 or skill_code & 1024 != 0)
-order by id;
+select distinct d.id, d.email, d.first_name, d.last_name
+from developers d
+join skillcodes s on (d.skill_code & s.code) > 0
+where s.name in ('Python', 'C#')
+order by d.id;
