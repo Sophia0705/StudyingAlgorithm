@@ -2,16 +2,31 @@
 
 import sys
 input = sys.stdin.readline
-from itertools import permutations
+
+def DFS(depth):
+    if len(temp) == M:
+        print(*temp)
+        return
+
+    for i in range(N):
+        if visited[i]:
+            continue
+        elif i > 0 and nums[i] == nums[i-1] and not visited[i-1]:
+            continue
+        else:
+            visited[i] = True
+            temp.append(nums[i])
+
+        DFS(depth+1)
+
+        # 백트래킹
+        temp.pop()
+        visited[i] = False
+
 
 N, M = map(int, input().split())
 nums = list(map(int, input().split()))
-
 nums.sort()  # 사전순 출력을 위해 정렬
-perm_set = set(permutations(nums, M))  # 중복 제거
+temp, visited = [], [False] * N
 
-# 다시 리스트로 바꿔 정렬
-result = sorted(perm_set)
-
-for p in result:
-    print(' '.join(map(str, p)))
+DFS(0)
