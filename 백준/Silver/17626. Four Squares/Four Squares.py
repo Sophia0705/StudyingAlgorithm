@@ -3,9 +3,9 @@ import sys, math
 input = sys.stdin.readline
 
 n = int(input())
-dp = [0]*50001
+dp = [0]*(n+1)
 
-for num in range(50001):
+for num in range(n+1):
     if int(math.sqrt(num))**2 == num:
         dp[num] = 1
     else:
