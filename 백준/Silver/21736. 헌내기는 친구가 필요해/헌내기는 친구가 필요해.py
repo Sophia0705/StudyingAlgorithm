@@ -1,22 +1,25 @@
 # 21736. 헌내기는 친구가 필요해
 import sys
-sys.setrecursionlimit(10**6)
 input = sys.stdin.readline
-def dfs(x, y):
+from collections import deque
+
+def bfs(x, y):
     global cnt
+    Q = deque()
     visited[x][y] = True
-    # 도연이 위치부터 탐색(x, y)
-    for di, dj in move:
-        ni, nj = x + di, y + dj
-        if 0 <= ni < N and 0 <= nj < M and not visited[ni][nj]:
-            if campus[ni][nj] == 'O':
-                visited[ni][nj] = True
-                dfs(ni, nj)
-            elif campus[ni][nj] == 'P':
-                visited[ni][nj] = True
-                cnt += 1
-                dfs(ni, nj)
-    return cnt
+    Q.append((x, y))
+    while Q:
+        r, c = Q.popleft()
+        for dr, dc in move:
+            nr, nc = r+dr, c+dc
+            if 0 <= nr < N and 0 <= nc < M and not visited[nr][nc]:
+                if campus[nr][nc] == 'O':
+                    visited[nr][nc] = True
+                    Q.append((nr, nc))
+                elif campus[nr][nc] == 'P':
+                    cnt += 1
+                    visited[nr][nc] = True
+                    Q.append((nr, nc))
 
 N, M = map(int, input().split())
 # I: 도연, P: 사람, O: 빈 공간, X: 벽
@@ -30,5 +33,5 @@ for i, row in enumerate(campus):
         x = i
         y = row.index('I')
         break
-dfs(x, y)
+bfs(x, y)
 print(cnt if cnt else "TT")
