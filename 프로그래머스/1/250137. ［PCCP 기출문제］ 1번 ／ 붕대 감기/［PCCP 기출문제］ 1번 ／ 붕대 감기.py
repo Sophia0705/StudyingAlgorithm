@@ -1,34 +1,30 @@
 def solution(bandage, health, attacks):
-    max_health = health  # 최대 체력 저장
-    current_health = health  # 현재 체력
+    t, x, y = bandage[0], bandage[1], bandage[2]
+    max_health = health
+    last_time = attacks[-1][0]  
+    timeline = [x]*(last_time+1)
+        
+    for att_time, hurt in attacks:
+        timeline[att_time] -= (hurt+x)
     
-    # attacks를 딕셔너리로 변환 (시간: 피해량)
-    attack_dict = {time: damage for time, damage in attacks}
-    
-    # 마지막 공격 시간까지 순회
-    last_attack_time = attacks[-1][0]
-    consecutive_heal = 0  # 연속 성공 시간
-    
-    for time in range(1, last_attack_time + 1):
-        # 공격이 있는 시간인 경우
-        if time in attack_dict:
-            current_health -= attack_dict[time]
-            consecutive_heal = 0
-            # 체력이 0 이하가 되면 -1 반환
-            if current_health <= 0:
-                return -1
-        # 공격이 없는 시간인 경우
-        else:
-            # 기본 회복
-            current_health += bandage[1]
-            consecutive_heal += 1
-            
-            # 연속 성공 보너스
-            if consecutive_heal == bandage[0]:
-                current_health += bandage[2]
-                consecutive_heal = 0
-            
-            # 최대 체력 초과하지 않도록 제한
-            current_health = min(current_health, max_health)
-    
-    return current_health
+    count = 0   # t되는지 체크
+    idx = 0
+    for sec in range(last_time+1):
+        if timeline[sec] == x:  # 공격 없으면 회복
+            count += 1
+            health += x
+            if count == t:  # 연속 회복
+                health += y
+                count = 0
+        else: # 공격
+            health += timeline[sec]
+            count = 0
+        # maxhealth 제한
+        if health > max_health:
+            health = max_health
+        
+        # 사망
+        if health <= 0:
+            return -1
+        
+    return health
