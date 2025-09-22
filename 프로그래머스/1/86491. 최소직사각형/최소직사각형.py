@@ -1,11 +1,12 @@
 def solution(sizes):
-    w, h = [], []
+    maxW, maxH = 0, 0   # 긴 변들 중 최대, 짧은 변들 중 최대
     
     for size in sizes:
-        max_side = max(size)
-        min_side = min(size)
+        w, h = max(size), min(size)
         
-        w.append(max_side)
-        h.append(min_side)
-    
-    return max(w)*max(h)
+        if w >= maxW:
+            maxW = w
+        if h >= maxH:
+            maxH = h
+            
+    return maxW * maxH
