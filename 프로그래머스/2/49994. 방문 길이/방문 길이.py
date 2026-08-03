@@ -1,37 +1,32 @@
-def location(r, c, dir):
-    if dir == 'U':
-        nr, nc = r, c+1
-    elif dir == 'D':
-        nr, nc = r, c-1
-    elif dir == 'R':
-        nr, nc = r+1, c
-    elif dir == 'L':
-        nr, nc = r-1, c
-    return nr, nc
-
-def check_range(r, c):
-    if 0 <= r <= 10 and 0 <= c <= 10:
+# 범위 체크
+def valid_check(x, y):
+    if -5 <= x <= 5 and -5 <= y <= 5:
         return True
-    else:
-        return False
+    return False
+
+# 이동
+def move(x, y, dir):
+    if dir == 'U':
+        y += 1
+    elif dir == 'D':
+        y -= 1
+    elif dir == 'R':
+        x += 1
+    elif dir == 'L':
+        x -= 1
+    return x, y
 
 def solution(dirs):
-    visited = set() # 중복 제거
-    answer = 0
-    r, c = 5, 5 # 시작 위치
+    answer = set()
+    x, y = 0, 0
+    
     for dir in dirs:
-        nr, nc = location(r, c, dir)
-        if check_range(nr, nc) == True:
-            # 현재 위치 -> 다음 위치 경로
-            path = ((r, c), (nr, nc))
-            reverse_path = ((nr, nc), (r, c))   # 양방향
-            if path not in visited and reverse_path not in visited:
-                visited.add(path)
-                visited.add(reverse_path)
-                answer += 1
-            # 현재 위치 갱신
-            r, c = nr, nc
-            
-        else:
+        nx, ny = move(x, y, dir)
+        if not valid_check(nx, ny):
             continue
-    return answer
+        # 좌표 아니고 경로 저장
+        answer.add((x, y, nx, ny))
+        answer.add((nx,ny, x, y)) # 경로 저장이니까 양방향
+        
+        x, y = nx, ny
+    return len(answer) // 2
