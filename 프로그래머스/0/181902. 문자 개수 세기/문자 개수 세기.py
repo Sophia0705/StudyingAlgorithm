@@ -1,11 +1,9 @@
 def solution(my_string):
-    answer = [0] * 52
+    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+    counts = {a: 0 for a in alphabet}
+    
+    
     for c in my_string:
-        if c.isupper():
-            idx = ord(c) - 65
-        else:   # 97 --> 26
-            idx = ord(c) - 71
-        answer[idx] += 1
-    # print(ord('A'))
-    # print(ord('a'))
+        counts[c] += 1
+    answer = list(counts.values())
     return answer
